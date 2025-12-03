@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title} ?: 'Error - Pirate\'s Treasure Chest'">Error - Pirate's Treasure Chest</title>
+    <link rel="stylesheet" th:href="@{/css/movies.css}">
+    <style>
+        .error-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background: linear-gradient(135deg, #2c1810, #4a2c1a);
+            border: 2px solid #d4af37;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            text-align: center;
+        }
+        .error-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        .error-title {
+            color: #d4af37;
+            font-size: 2em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .error-message {
+            color: #fff;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .error-actions {
+            margin-top: 30px;
+        }
+        .action-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            margin: 0 10px;
+            background: linear-gradient(135deg, #d4af37, #ffd700);
+            color: #1a1a1a;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .action-btn:hover {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            transform: translateY(-2px);
+        }
+        .search-help {
+            background: #1a1a1a;
+            border: 1px solid #d4af37;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        .search-help h4 {
+            color: #d4af37;
+            margin-bottom: 15px;
+        }
+        .search-help ul {
+            color: #ccc;
+            margin-left: 20px;
+        }
+        .search-help li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="error-container">
+            <div class="error-icon">🏴‍☠️</div>
+            <h1 class="error-title" th:text="${title} ?: 'Shiver Me Timbers!'">Shiver Me Timbers!</h1>
+            <div class="error-message" th:text="${message} ?: 'Arrr! Something went wrong on our ship, matey!'">
+                Arrr! Something went wrong on our ship, matey!
+            </div>
+            
+            <!-- Search Help for Invalid Search Parameters -->
+            <div class="search-help" th:if="${searchParams}">
+                <h4>⚓ How to Hunt for Movie Treasures:</h4>
+                <ul>
+                    <li><strong>Movie Name:</strong> Enter part of the movie title (e.g., "Prison", "Hero", "Wars")</li>
+                    <li><strong>Movie ID:</strong> Enter a specific number (1-12) to find a particular treasure</li>
+                    <li><strong>Genre:</strong> Enter a genre type (e.g., "Drama", "Action", "Sci-Fi")</li>
+                </ul>
+                <p style="color: #d4af37; margin-top: 15px; font-style: italic;">
+                    Ye need to provide at least one of these to start yer treasure hunt!
+                </p>
+            </div>
+            
+            <div class="error-actions">
+                <a href="/movies" class="action-btn">⚓ Back to Treasure Chest</a>
+                <a href="/movies/search?name=" class="action-btn" th:if="${searchParams}">🔍 Try Searching Again</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

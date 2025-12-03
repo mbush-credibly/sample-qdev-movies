@@ -69,4 +69,70 @@ public class MovieService {
         }
         return Optional.ofNullable(movieMap.get(id));
     }
+
+    /**
+     * Searches for movies based on the provided criteria with pirate flair.
+     * Ahoy matey! This method helps ye hunt for treasure in our movie collection!
+     * 
+     * @param name Movie name to search for (partial matches allowed)
+     * @param id Specific movie ID to find
+     * @param genre Genre to filter by
+     * @return List of movies matching the search criteria
+     */
+    public List<Movie> searchMovies(String name, Long id, String genre) {
+        logger.info("Arrr! Searching for movie treasures with name: {}, id: {}, genre: {}", name, id, genre);
+        
+        List<Movie> results = new ArrayList<>();
+        
+        for (Movie movie : movies) {
+            boolean matches = true;
+            
+            // Search by ID if provided
+            if (id != null && movie.getId() != id) {
+                matches = false;
+            }
+            
+            // Search by name if provided (case-insensitive partial match)
+            if (name != null && !name.trim().isEmpty()) {
+                String searchName = name.trim().toLowerCase();
+                String movieName = movie.getMovieName().toLowerCase();
+                if (!movieName.contains(searchName)) {
+                    matches = false;
+                }
+            }
+            
+            // Search by genre if provided (case-insensitive partial match)
+            if (genre != null && !genre.trim().isEmpty()) {
+                String searchGenre = genre.trim().toLowerCase();
+                String movieGenre = movie.getGenre().toLowerCase();
+                if (!movieGenre.contains(searchGenre)) {
+                    matches = false;
+                }
+            }
+            
+            if (matches) {
+                results.add(movie);
+            }
+        }
+        
+        logger.info("Ahoy! Found {} movie treasures matching yer search criteria", results.size());
+        return results;
+    }
+
+    /**
+     * Validates search parameters to ensure they're ship-shape!
+     * 
+     * @param name Movie name parameter
+     * @param id Movie ID parameter
+     * @param genre Genre parameter
+     * @return true if at least one valid search parameter is provided
+     */
+    public boolean isValidSearchRequest(String name, Long id, String genre) {
+        // At least one parameter should be provided and valid
+        boolean hasValidName = name != null && !name.trim().isEmpty();
+        boolean hasValidId = id != null && id > 0;
+        boolean hasValidGenre = genre != null && !genre.trim().isEmpty();
+        
+        return hasValidName || hasValidId || hasValidGenre;
+    }
 }

@@ -3,62 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${movie.movieName} + ' - Movie Details'">Movie Details</title>
+    <title th:text="${movie.movieName} + ' - Treasure Details'">Treasure Details</title>
     <link rel="stylesheet" th:href="@{/css/movie-details.css}">
+    <style>
+        .pirate-header {
+            text-align: center;
+            color: #d4af37;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .treasure-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #d4af37, #ffd700);
+            color: #1a1a1a;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .pirate-info-labels .info-label {
+            color: #d4af37;
+        }
+        .back-button {
+            background: linear-gradient(135deg, #d4af37, #ffd700);
+            color: #1a1a1a;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        .back-button:hover {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            transform: translateY(-2px);
+        }
+        .search-button {
+            background: linear-gradient(135deg, #666, #888);
+            color: #fff;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 20px;
+            margin-left: 15px;
+            transition: all 0.3s ease;
+        }
+        .search-button:hover {
+            background: linear-gradient(135deg, #888, #aaa);
+            transform: translateY(-2px);
+        }
+    </style>
 </head>
 <body>
     <div class="container">
+        <!-- Pirate Greeting -->
+        <div class="pirate-header" th:if="${pirateGreeting}" th:text="${pirateGreeting}">
+            Ahoy! Here be the details of yer chosen treasure:
+        </div>
+        
         <div class="movie-details">
             <div class="movie-header">
                 <div class="movie-icon" th:text="${movieIcon}">🎬</div>
-                <h1 class="movie-title" th:text="${movie.movieName}">Movie Title</h1>
+                <h1 class="movie-title">
+                    🏴‍☠️ <span th:text="${movie.movieName}">Movie Title</span> 🏴‍☠️
+                </h1>
+                <div class="treasure-badge">⚓ Movie Treasure #<span th:text="${movie.id}">1</span> ⚓</div>
             </div>
             
-            <div class="movie-info">
+            <div class="movie-info pirate-info-labels">
                 <div class="info-item">
-                    <span class="info-label">Director</span>
+                    <span class="info-label">Captain (Director)</span>
                     <span class="info-value" th:text="${movie.director}">Director</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Year</span>
+                    <span class="info-label">Year of Discovery</span>
                     <span class="info-value" th:text="${movie.year}">Year</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Genre</span>
+                    <span class="info-label">Type of Adventure</span>
                     <span class="info-value" th:text="${movie.genre}">Genre</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Duration</span>
+                    <span class="info-label">Length of Journey</span>
                     <span class="info-value" th:text="${movie.duration} + ' minutes'">Duration</span>
                 </div>
             </div>
             
             <div class="rating-section">
-                <h3>Rating</h3>
+                <h3>⚓ Treasure Rating ⚓</h3>
                 <div>
-                    <span class="stars">★★★★★</span>
-                    <span class="rating-score" th:text="${#numbers.formatDecimal(movie.imdbRating, 1, 1)} + '/5'">5.0/5</span>
+                    <span class="stars">
+                        <span th:each="i : ${#numbers.sequence(1, 5)}" 
+                              th:text="${i <= movie.imdbRating ? '★' : (i - 0.5 == movie.imdbRating ? '⭐' : '☆')}">★</span>
+                    </span>
+                    <span class="rating-score" th:text="${#numbers.formatDecimal(movie.imdbRating, 1, 1)} + '/5 ⚓'">5.0/5 ⚓</span>
                 </div>
             </div>
             
             <div class="description">
-                <h3>Description</h3>
+                <h3>🗺️ Treasure Map (Description) 🗺️</h3>
                 <p th:text="${movie.description}">Movie description</p>
             </div>
             
             <div class="reviews-section" th:if="${not #lists.isEmpty(allReviews)}">
-                <h3>Customer Reviews</h3>
+                <h3>🏴‍☠️ Crew Reviews 🏴‍☠️</h3>
                 <div class="review" th:each="review : ${allReviews}">
                     <div class="review-header">
                         <div class="review-avatar" th:text="${review.avatarEmoji}">👨</div>
-                        <div class="review-user" th:text="${review.userName}">User</div>
-                        <div class="review-rating">★★★★★ <span th:text="${#numbers.formatDecimal(review.rating, 1, 1)}">5.0</span></div>
+                        <div class="review-user">Matey <span th:text="${review.userName}">User</span></div>
+                        <div class="review-rating">
+                            <span th:each="i : ${#numbers.sequence(1, 5)}" 
+                                  th:text="${i <= review.rating ? '★' : '☆'}">★</span>
+                            <span th:text="${#numbers.formatDecimal(review.rating, 1, 1)} + ' ⚓'">5.0 ⚓</span>
+                        </div>
                     </div>
                     <div class="review-comment" th:text="${review.comment}">Review comment</div>
                 </div>
             </div>
             
-            <a th:href="@{/movies}" class="back-button">← Back to Movies</a>
+            <div style="text-align: center;">
+                <a th:href="@{/movies}" class="back-button">⚓ Back to Treasure Chest</a>
+                <a th:href="@{/movies/search}" class="search-button">🔍 Hunt for More Treasures</a>
+            </div>
         </div>
     </div>
 </body>
